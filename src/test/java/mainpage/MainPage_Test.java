@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
+import pages.MainPage;
 
 @ExtendWith(UIExtension.class)
 public class MainPage_Test {
@@ -16,10 +17,13 @@ public class MainPage_Test {
   @Inject
   public WebDriver driver;
 
+  @Inject
+  public MainPage mainPage;
+
   @Test
-  void test1() throws InterruptedException {
-    driver.get("https://otus.ru/");
-    Thread.sleep(1000);
+  void test1() {
+    mainPage.open();
+
   }
 
 
