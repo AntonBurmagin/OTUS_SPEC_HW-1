@@ -2,11 +2,16 @@ package pages.catalog;
 
 import annotations.Path;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.AbsBasePage;
 import pages.catalog.courses.AbsCoursePage;
 import pages.catalog.courses.CoursePage;
+import java.util.List;
+import java.util.Optional;
+
 
 @Path("/catalog/courses")
 public class CatalogPage extends AbsBasePage {
@@ -16,30 +21,50 @@ public class CatalogPage extends AbsBasePage {
 
   //selectors
   private final By moreCoursesButtonLocator = new By.ByXPath("//button[contains(text(),\"Показать еще\")]");
-  private final By cookieNotificationButtonBy = new By.ByXPath("//span[text()=\"Посещая наш сайт, вы принимаете\"]//..//button");
+  private final By cookieNotificationButtonLocator = new By.ByXPath("//span[text()=\"Посещая наш сайт, вы принимаете\"]//..//button");
+  private final By coursesListSelector = new By.ByCssSelector("main section a");
+  private final By stickyBannerSelector = new By.ByCssSelector("[class=\"sticky-banner__close js-sticky-banner-close\"]");
+
 
   //methods
   public void clickMoreCoursesButton(){
-    if(waiter.waitForCondition(ExpectedConditions.elementToBeClickable(moreCoursesButtonLocator)))
+    if(waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(moreCoursesButtonLocator)))
       driver.findElement(moreCoursesButtonLocator).click();
   }
 
   public void acceptCookiePolicy(){
-    waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(cookieNotificationButtonBy));
-    driver.findElement(cookieNotificationButtonBy).click();
+    waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(cookieNotificationButtonLocator));
+    driver.findElement(cookieNotificationButtonLocator).click();
   }
 
-  public boolean findCourse(By courseBy){
+  public void closeStickyBanner(){
+    waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(stickyBannerSelector));
+    driver.findElement(stickyBannerSelector).click();
+  }
+
+  public boolean findCourse(String courseName){
     acceptCookiePolicy();
-    
-    while(!waiter.waitForConditionNoMessage(ExpectedConditions.visibilityOfElementLocated(courseBy))) {
+    closeStickyBanner();
+
+    while(waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(moreCoursesButtonLocator))) {
       clickMoreCoursesButton();
     }
-    return true;
+
+    System.out.println(getDisplayedCourses().stream()
+        .anyMatch(tile -> tile.findElement(By.cssSelector("h6"))
+            .getText().equals(courseName)));
+
+    return getDisplayedCourses().stream()
+        .anyMatch(tile -> tile.findElement(By.cssSelector("h6"))
+            .getText().equals(courseName));
   }
 
-  public AbsCoursePage clickCourse(By courseBy){
-    driver.findElement(courseBy).click();
+  public List<WebElement> getDisplayedCourses(){
+    return driver.findElements(coursesListSelector);
+  }
+
+  public AbsCoursePage clickCourse(String courseName){
+    driver.findElement(courseByFromName(courseName)).click();
     return new CoursePage(driver);
   }
 

@@ -14,7 +14,7 @@ public class CoursePage extends AbsCoursePage{
 
   @Override
   public String getCourseTitle() {
-    waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(titleSelector));
+    waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(titleSelector));
     return driver.findElement(titleSelector).getText();
   }
 }

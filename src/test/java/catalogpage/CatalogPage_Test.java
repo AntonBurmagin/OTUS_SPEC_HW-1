@@ -27,10 +27,9 @@ public class CatalogPage_Test {
     String courseName = "QA Automation Engineer";
     page.open();
 
-    assertTrue(page.findCourse(page.courseByFromName(courseName)));
-    AbsCoursePage p = page.clickCourse(page.courseByFromName(courseName));
-    assertThat(p.getCourseTitle()).isEqualTo(courseName);
-    System.out.println(p.getCourseTitle());
+    assertTrue(page.findCourse(courseName));
+    AbsCoursePage coursePage = page.clickCourse(courseName);
+    assertThat(coursePage.getCourseTitle()).isEqualTo(courseName);
   }
 
 }
