@@ -3,16 +3,17 @@ package catalogpage;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import data.StartDateExtremum;
 import extensions.UIExtension;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebElement;
 import pages.catalog.CatalogPage;
 import pages.catalog.courses.AbsCoursePage;
-import pages.catalog.courses.CoursePage;
-import java.time.Duration;
 
-
+import java.io.IOException;
+import java.util.List;
 
 
 @ExtendWith(UIExtension.class)
@@ -23,13 +24,23 @@ public class CatalogPage_Test {
 
 
   @Test
-  public void findCourseTest() throws InterruptedException {
+  public void courseTitleTest() {
     String courseName = "QA Automation Engineer";
     page.open();
 
-    assertTrue(page.findCourse(courseName));
+    page.courseShouldPresent(courseName);
     AbsCoursePage coursePage = page.clickCourse(courseName);
-    assertThat(coursePage.getCourseTitle()).isEqualTo(courseName);
+    coursePage.courseTitleShouldBe(courseName);
+  }
+
+  @Test
+  public void nearestAndLatestCoursesPageInfoTest() throws IOException {
+    page.open();
+
+    StartDateExtremum extremumDates = new StartDateExtremum(page.getCoursesCorrectStartDate());
+
+    page.catalogAndCourseInfoShouldMatch(page.getCoursesByDate(extremumDates.getLatestDate()));
+    page.catalogAndCourseInfoShouldMatch(page.getCoursesByDate(extremumDates.getNearestDate()));
   }
 
 }
