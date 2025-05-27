@@ -24,7 +24,6 @@ public class UIExtension implements BeforeEachCallback, AfterEachCallback {
   @Override
   public void beforeEach(ExtensionContext context) {
     WebDriver driver = new WebDriverFactory().create("--start-fullscreen");
-
     injector = Guice.createInjector(new GuicePagesModule(driver), new GuiceComponentsModule(driver));
     injector.injectMembers(context.getTestInstance().get());
   }

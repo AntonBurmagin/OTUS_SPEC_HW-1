@@ -1,9 +1,8 @@
 package data;
 
-import org.openqa.selenium.WebElement;
-
 import java.time.LocalDate;
 import java.util.List;
+
 
 public class StartDateExtremum {
   private LocalDate nearestDate = null;
