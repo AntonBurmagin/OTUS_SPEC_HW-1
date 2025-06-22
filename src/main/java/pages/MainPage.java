@@ -3,11 +3,11 @@ package pages;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import annotations.Path;
+import components.CatalogFilterSection;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import pages.catalog.CatalogPage;
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +15,7 @@ import java.util.Random;
 
 @Path("/")
 public class MainPage extends AbsBasePage {
+  private Random randomGen = new Random();
 
   //locators
   private final By headerLearningViewBoxSelector = By.cssSelector("[title=\"Обучение\"]");
@@ -47,7 +48,7 @@ public class MainPage extends AbsBasePage {
     List<WebElement> categories = getHeaderCourseCategories();
     if (categories.isEmpty())
       throw new RuntimeException("Header categories list is empty!");
-    int randIndex = new Random().nextInt(categories.size());
+    int randIndex = randomGen.nextInt(categories.size());
     return categories.get(randIndex);
   }
 
@@ -55,9 +56,9 @@ public class MainPage extends AbsBasePage {
     String categoryName = moveToCategory.getText().split(" \\(")[0];
     actions.moveToElement(moveToCategory).build().perform();
     moveToCategory.click();
-    CatalogPage moveToPage = new CatalogPage(driver);
-    String filter = String.join("", moveToPage.getActiveFilters());
-    assertThat(categoryName).isEqualTo(filter);
+    CatalogFilterSection pageFilter = new CatalogFilterSection(driver);
+    String actualFilter = String.join("", pageFilter.getActiveInputNotDefaultFilterValues());
+    assertThat(categoryName).isEqualTo(actualFilter);
   }
 
 

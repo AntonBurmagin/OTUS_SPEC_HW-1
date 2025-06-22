@@ -13,6 +13,7 @@ public class MainPage_Test {
   @Inject
   public MainPage page;
 
+
   @Test
   void moveToRandomCategoryTest() {
     page.open();

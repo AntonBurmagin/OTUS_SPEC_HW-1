@@ -29,7 +29,8 @@ public class CatalogPage_Test {
   @Test
   public void nearestAndLatestCoursesPageInfoTest() throws IOException {
     page.open();
-    StartDateExtremum extremumDates = new StartDateExtremum(page.getCoursesCorrectStartDate());
+    StartDateExtremum extremumDates = new StartDateExtremum();
+    extremumDates.initialize(page.getCoursesCorrectStartDate());
     page.catalogAndCourseInfoShouldMatch(page.getCoursesByDate(extremumDates.getLatestDate()));
     page.catalogAndCourseInfoShouldMatch(page.getCoursesByDate(extremumDates.getNearestDate()));
   }

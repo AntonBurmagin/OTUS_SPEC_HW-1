@@ -9,27 +9,20 @@ public class StartDateExtremum {
   private LocalDate latestDate = null;
 
 
-  public StartDateExtremum(List<String> startDates) {
-    if(startDates.isEmpty())
-      throw new RuntimeException("There is no courses with correct start date!");
-
-    for (String date : startDates) {
-      String []startDateTextSplit = date.split(" ");
-
-      LocalDate startDate = LocalDate.of(Integer.parseInt(startDateTextSplit[2]), MonthData.customValueOf(startDateTextSplit[1]).getValue(), Integer.parseInt(startDateTextSplit[0]));
-      if (nearestDate == null && latestDate == null) {
-        nearestDate = startDate;
-        latestDate = startDate;
-      }
-      if (startDate.isBefore(nearestDate)) {
-        nearestDate = startDate;
-      }
-      if (startDate.isAfter(latestDate)) {
-        latestDate = startDate;
-      }
+  public void initialize(List<String> startDates) {
+    if (!startDates.isEmpty()) {
+      List<LocalDate> localDates = startDates.stream().map((date) -> {
+        String []dateArr = date.split(" ");
+        return LocalDate.of(Integer.parseInt(dateArr[2]), MonthData.customValueOf(dateArr[1]).getValue(), Integer.parseInt(dateArr[0]));
+      }).toList();
+      nearestDate = localDates.stream().reduce((firstLocal, secondLocal) -> {
+        return firstLocal.isBefore(secondLocal) ? firstLocal : secondLocal;
+      }).orElse(null);
+      latestDate = localDates.stream().reduce((firstLocal, secondLocal) -> {
+        return firstLocal.isAfter(secondLocal) ? firstLocal : secondLocal;
+      }).orElse(null);
     }
   }
-
 
   public LocalDate getNearestDate() {
     return nearestDate;
