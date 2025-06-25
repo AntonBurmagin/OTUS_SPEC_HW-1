@@ -1,13 +1,11 @@
 package pages;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import annotations.Path;
-import components.CatalogFilterSection;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import pages.catalog.CatalogPage;
 import java.util.List;
 import java.util.Random;
 
@@ -53,12 +51,11 @@ public class MainPage extends AbsBasePage {
   }
 
   public void moveToCategoryShouldMatchCatalogFilter(WebElement moveToCategory){
-    String categoryName = moveToCategory.getText().split(" \\(")[0];
+    String categoryText = moveToCategory.getText();
     actions.moveToElement(moveToCategory).build().perform();
     moveToCategory.click();
-    CatalogFilterSection pageFilter = new CatalogFilterSection(driver);
-    String actualFilter = String.join("", pageFilter.getActiveInputNotDefaultFilterValues());
-    assertThat(categoryName).isEqualTo(actualFilter);
+    CatalogPage catalogPage = new CatalogPage(driver);
+    catalogPage.chosenCategoryShouldMatchCatalogFilter(categoryText);
   }
 
 

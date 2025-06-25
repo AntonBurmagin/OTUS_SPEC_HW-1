@@ -40,10 +40,6 @@ public class CatalogPage extends AbsBasePage {
 
 
   //methods
-  public List<String> getActiveFilters(){
-    return new CatalogFilterSection(driver).getActiveInputNotDefaultFilterValues();
-  }
-
   public void clickMoreCoursesButton(){
     if(waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(moreCoursesButtonLocator)))
       driver.findElement(moreCoursesButtonLocator).click();
@@ -127,6 +123,13 @@ public class CatalogPage extends AbsBasePage {
       assertThat(catalogName).isEqualTo(coursePageName);
       assertTrue(catalogDate.contains(coursePageDate));
     }
+  }
+
+  public void chosenCategoryShouldMatchCatalogFilter(String chosenCategoryText){
+    String categoryClearName = chosenCategoryText.split(" \\(")[0];
+    CatalogFilterSection pageFilter = new CatalogFilterSection(driver);
+    String actualFilter = String.join("", pageFilter.getActiveInputNotDefaultFilterValues());
+    assertThat(categoryClearName).isEqualTo(actualFilter);
   }
 
 
