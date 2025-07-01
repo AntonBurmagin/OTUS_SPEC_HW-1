@@ -9,7 +9,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 
 public class WebDriverFactory implements IDriverFactory {
-  private final String browser = System.getProperty("browser");
+//  private final String browser = System.getProperty("browser");
+  private final String browser = "chrome";
 
   @Override
   public WebDriver create(String...settings){

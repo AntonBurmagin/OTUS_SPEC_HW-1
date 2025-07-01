@@ -1,11 +1,14 @@
 package pages;
 
 import annotations.Path;
+import com.google.inject.Inject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.catalog.CatalogPage;
+import scope.ScenScoped;
+
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +18,11 @@ import java.util.Random;
 public class MainPage extends AbsBasePage {
   private Random randomGen = new Random();
 
+  @Inject
+  public MainPage(ScenScoped scenScoped){
+    super(scenScoped.getDriver());
+  }
+
   //locators
   private final By headerLearningViewBoxSelector = By.cssSelector("[title=\"Обучение\"]");
   private final By learningViewBoxCourseCategoriesLocator = By.xpath("//p[text()=\"Все курсы\"]/../div/a");
@@ -22,10 +30,6 @@ public class MainPage extends AbsBasePage {
 
 
   //methods
-  public MainPage(WebDriver driver){
-    super(driver);
-  }
-
   public void acceptCookiePolicy(){
     if(waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(cookieNotificationButtonLocator)))
       driver.findElement(cookieNotificationButtonLocator).click();
@@ -54,7 +58,7 @@ public class MainPage extends AbsBasePage {
     String categoryText = moveToCategory.getText();
     actions.moveToElement(moveToCategory).build().perform();
     moveToCategory.click();
-    CatalogPage catalogPage = new CatalogPage(driver);
+    CatalogPage catalogPage = new CatalogPage((ScenScoped) driver);
     catalogPage.chosenCategoryShouldMatchCatalogFilter(categoryText);
   }
 

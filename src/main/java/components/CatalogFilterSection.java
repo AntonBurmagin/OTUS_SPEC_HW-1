@@ -1,10 +1,13 @@
 package components;
 
 import annotations.Component;
+import com.google.inject.Inject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import scope.ScenScoped;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,9 @@ import java.util.List;
 public class CatalogFilterSection extends AbsComponent{
   private final WebElement catalogFilter;
 
-  public CatalogFilterSection(WebDriver driver){
-    super(driver);
+  @Inject
+  public CatalogFilterSection(ScenScoped scenScoped){
+    super(scenScoped.getDriver());
     waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(getComponentBy()));
     catalogFilter = driver.findElement(getComponentBy());
   }

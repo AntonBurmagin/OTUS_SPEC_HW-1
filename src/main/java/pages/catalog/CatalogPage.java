@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import annotations.Path;
+import com.google.inject.Inject;
 import components.CatalogFilterSection;
 import data.MonthData;
 import org.jsoup.Jsoup;
@@ -15,6 +16,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.AbsBasePage;
 import pages.catalog.courses.AbsCoursePage;
 import pages.catalog.courses.CoursePage;
+import scope.ScenScoped;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,8 +29,9 @@ import java.util.stream.Collectors;
 @Path("/catalog/courses")
 public class CatalogPage extends AbsBasePage {
 
-  public CatalogPage(WebDriver driver){
-    super(driver);
+  @Inject
+  public CatalogPage(ScenScoped scenScoped){
+    super(scenScoped.getDriver());
   }
 
 
@@ -78,7 +82,7 @@ public class CatalogPage extends AbsBasePage {
   public AbsCoursePage clickCourse(String courseName){
     if(waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(courseByFromName(courseName))))
       actions.moveToElement(driver.findElement(courseByFromName(courseName))).click().build().perform();
-    return new CoursePage(driver);
+    return new CoursePage((ScenScoped) driver);
   }
 
   public By courseByFromName(String courseName){
@@ -127,7 +131,7 @@ public class CatalogPage extends AbsBasePage {
 
   public void chosenCategoryShouldMatchCatalogFilter(String chosenCategoryText){
     String categoryClearName = chosenCategoryText.split(" \\(")[0];
-    CatalogFilterSection pageFilter = new CatalogFilterSection(driver);
+    CatalogFilterSection pageFilter = new CatalogFilterSection((ScenScoped) driver);
     String actualFilter = String.join("", pageFilter.getActiveInputNotDefaultFilterValues());
     assertThat(categoryClearName).isEqualTo(actualFilter);
   }
