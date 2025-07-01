@@ -54,6 +54,13 @@ public class MainPage extends AbsBasePage {
     return categories.get(randIndex);
   }
 
+  public void clickCourseCategory(WebElement courseCategory) {
+    String categoryText = courseCategory.getText();
+    actions.moveToElement(courseCategory).build().perform();
+    courseCategory.click();
+//    return new CatalogPage((ScenScoped) driver);
+  }
+
   public void moveToCategoryShouldMatchCatalogFilter(WebElement moveToCategory){
     String categoryText = moveToCategory.getText();
     actions.moveToElement(moveToCategory).build().perform();

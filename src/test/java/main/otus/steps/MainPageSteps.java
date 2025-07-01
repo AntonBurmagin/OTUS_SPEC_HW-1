@@ -1,8 +1,10 @@
 package main.otus.steps;
 
 import com.google.inject.Inject;
+import io.cucumber.java.ru.Если;
+import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Пусть;
-import io.cucumber.java.ru.Тогда;
+import org.openqa.selenium.WebElement;
 import pages.MainPage;
 import scope.ScenScoped;
 
@@ -15,26 +17,24 @@ public class MainPageSteps {
   private MainPage mainPage;
 
 
-  @Пусть("Открыта Главная страница")
+  @Пусть("Открыть Главная страница")
   public void openMainPage() {
     mainPage.open();
-    System.out.println("Properties:");
-    System.out.println(System.getProperty("base.url"));
-    System.out.println(System.getProperty("browser"));
   }
 
-  @Тогда("Откроется страница Каталог курсов")
-  public void openCatalogPage() {
-    System.out.println("Catalog page open step");
+  @Если("Навестись на меню Обучение")
+  public void hoverOverLearning() {
+    mainPage.hoverOverLearning();
   }
 
-//  @Если("Навестись на меню Обучение")
-//  public void hoverOverLearning() {
-//    mainPage.hoverOverLearning();
-//  }
+  @И("Выбрать случайную категорию курсов")
+  public void getRandomHeaderCourseCategory() {
+    WebElement courseCategoryElement = mainPage.getRandomHeaderCourseCategory();
+    scenScoped.storagePut("randomCourseCategoryElementText", courseCategoryElement.getText());
+    mainPage.clickCourseCategory(courseCategoryElement);
+  }
 
-//  @И("Выбрать случайную категорию курсов")
-//  public void {
-//
-//  }
+
+
+
 }

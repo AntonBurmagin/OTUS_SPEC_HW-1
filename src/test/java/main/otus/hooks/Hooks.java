@@ -15,7 +15,6 @@ public class Hooks {
   @After
   public void after() {
     WebDriver driver = scenScoped.getDriver();
-    System.out.println("after");
     if (driver != null)
       driver.quit();
   }

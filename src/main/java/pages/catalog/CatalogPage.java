@@ -131,7 +131,7 @@ public class CatalogPage extends AbsBasePage {
 
   public void chosenCategoryShouldMatchCatalogFilter(String chosenCategoryText){
     String categoryClearName = chosenCategoryText.split(" \\(")[0];
-    CatalogFilterSection pageFilter = new CatalogFilterSection((ScenScoped) driver);
+    CatalogFilterSection pageFilter = new CatalogFilterSection(driver);
     String actualFilter = String.join("", pageFilter.getActiveInputNotDefaultFilterValues());
     assertThat(categoryClearName).isEqualTo(actualFilter);
   }

@@ -17,8 +17,9 @@ public class CatalogFilterSection extends AbsComponent{
   private final WebElement catalogFilter;
 
   @Inject
-  public CatalogFilterSection(ScenScoped scenScoped){
-    super(scenScoped.getDriver());
+  public CatalogFilterSection(WebDriver driver){
+    super(driver);
+    System.out.println(getComponentBy());
     waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(getComponentBy()));
     catalogFilter = driver.findElement(getComponentBy());
   }

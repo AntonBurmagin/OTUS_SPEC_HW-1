@@ -7,8 +7,8 @@ import org.openqa.selenium.WebDriver;
 
 
 public abstract class AbsBasePage extends AbsCommon {
-//  private String baseUrl = System.getProperty("base.url");
-  private String baseUrl = "https://otus.ru";
+  private String baseUrl = System.getProperty("base.url");
+
 
   public AbsBasePage(WebDriver driver) {
     super(driver);
