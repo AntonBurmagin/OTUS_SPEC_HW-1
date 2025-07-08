@@ -4,6 +4,9 @@ import annotations.Path;
 import common.AbsCommon;
 import exceptions.PathNotDeclaredException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 public abstract class AbsBasePage extends AbsCommon {
@@ -26,6 +29,13 @@ public abstract class AbsBasePage extends AbsCommon {
   public void open(){
     baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.lastIndexOf("/")) : baseUrl;
     driver.get(baseUrl + getAddPath());
+  }
+
+  public void urlShouldContainBaseUrlAndPath(){
+    String expectedUrl = baseUrl + getAddPath();
+    waiter.waitForCondition(ExpectedConditions.urlContains(expectedUrl));
+    String currentUrl = driver.getCurrentUrl();
+    assertThat(currentUrl).containsPattern(expectedUrl);
   }
 
 }

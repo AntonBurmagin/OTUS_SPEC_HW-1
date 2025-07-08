@@ -19,7 +19,6 @@ public class CatalogFilterSection extends AbsComponent{
   @Inject
   public CatalogFilterSection(WebDriver driver){
     super(driver);
-    System.out.println(getComponentBy());
     waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(getComponentBy()));
     catalogFilter = driver.findElement(getComponentBy());
   }

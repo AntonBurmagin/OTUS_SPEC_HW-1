@@ -79,10 +79,10 @@ public class CatalogPage extends AbsBasePage {
     return driver.findElements(coursesListSelector);
   }
 
-  public AbsCoursePage clickCourse(String courseName){
+  public void clickCourse(String courseName){
     if(waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(courseByFromName(courseName))))
       actions.moveToElement(driver.findElement(courseByFromName(courseName))).click().build().perform();
-    return new CoursePage((ScenScoped) driver);
+//    return new CoursePage((ScenScoped) driver);
   }
 
   public By courseByFromName(String courseName){
