@@ -9,7 +9,7 @@ import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 @IncludeEngines("cucumber")
 @SelectClasspathResource("otus")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "main/otus")
-@IncludeTags("extremumDates")
+@IncludeTags("prepCourse")
 public class RunnerTest {
 
 }

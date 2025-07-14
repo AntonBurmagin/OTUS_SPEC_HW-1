@@ -54,8 +54,11 @@ public class MainPage extends AbsBasePage {
     return categories.get(randIndex);
   }
 
+  public WebElement getCourseCategoryByName(String name) {
+    return getHeaderCourseCategories().stream().filter(courseEl -> courseEl.getText().contains(name)).findFirst().get();
+  }
+
   public void clickCourseCategory(WebElement courseCategory) {
-    String categoryText = courseCategory.getText();
     actions.moveToElement(courseCategory).build().perform();
     courseCategory.click();
 //    return new CatalogPage((ScenScoped) driver);

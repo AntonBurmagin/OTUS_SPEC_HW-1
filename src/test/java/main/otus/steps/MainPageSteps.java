@@ -28,10 +28,15 @@ public class MainPageSteps {
   }
 
   @И("Выбрать случайную категорию курсов")
-  public void getRandomHeaderCourseCategory() {
+  public void clickRandomHeaderCourseCategory() {
     WebElement courseCategoryElement = mainPage.getRandomHeaderCourseCategory();
     scenScoped.storagePut("randomCourseCategoryElementText", courseCategoryElement.getText());
     mainPage.clickCourseCategory(courseCategoryElement);
+  }
+
+  @И("Выбрать категорию курсов (.*)$")
+  public void clickCourseCategory(String category) {
+    mainPage.clickCourseCategory(mainPage.getCourseCategoryByName(category));
   }
 
 

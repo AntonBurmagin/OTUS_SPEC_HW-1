@@ -11,6 +11,8 @@ import scope.ScenScoped;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.function.BinaryOperator;
 
 public class CatalogPageSteps {
   @Inject
@@ -63,6 +65,28 @@ public class CatalogPageSteps {
     if (nearestDate != latestDate)
       catalogPage.catalogAndCourseInfoShouldMatch(catalogPage.getCoursesByDate(latestDate));
   }
+
+  @Тогда("Отобрать (Самые дорогие|Самые дешевые) (?:подготовительные курсы)$")
+  public void filterCourseByPrice(String predicate) {
+    System.out.println(predicate);
+    Integer priceToFind = catalogPage.getDisplayedCourses().stream()
+        .map(course -> catalogPage.getPrepCoursePrice(course))
+        .distinct().filter(price -> price.length() > 0).map(price -> Integer.parseInt(price))
+        .reduce((firstPrice, secondPrice) -> {
+          if (predicate.equalsIgnoreCase("Самые дорогие"))
+            return firstPrice > secondPrice ? firstPrice : secondPrice;
+          else
+            return firstPrice < secondPrice ? firstPrice : secondPrice;
+        }).orElse(null);
+
+    catalogPage.getDisplayedCourses().stream()
+        .filter(course -> catalogPage.getPrepCoursePrice(course).equalsIgnoreCase(priceToFind.toString()))
+        .forEach(course -> {
+          System.out.println(course.getText());
+          System.out.println("-----------------------------");
+        });
+  }
+
 
 
 

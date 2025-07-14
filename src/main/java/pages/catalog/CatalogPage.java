@@ -129,6 +129,36 @@ public class CatalogPage extends AbsBasePage {
     }
   }
 
+  public void getMinPriceCourses(List<WebElement> courses) throws IOException {
+    Document coursePage;
+    Integer minPrice = null;
+    for (WebElement course : courses) {
+      String href = System.getProperty("base.url") + course.getDomAttribute("href");
+      coursePage = Jsoup.connect(href).get();
+      String strPrice = coursePage.selectXpath("*//div[contains(text(),'Стоимость')]/../div[2]")
+                                  .text().replaceAll("[^0-9]", "");
+      if (strPrice.length() > 0) {
+        Integer price = Integer.parseInt(strPrice);
+        if (minPrice == null || price < minPrice)
+          minPrice = price;
+      }
+    }
+    System.out.println("Min price is " + minPrice);
+  }
+
+  public String getPrepCoursePrice(WebElement prepCourseTile) {
+    Document coursePage;
+    String href = System.getProperty("base.url") + prepCourseTile.getDomAttribute("href");
+    try {
+      coursePage = Jsoup.connect(href).get();
+      String strPrice = coursePage.selectXpath("*//div[contains(text(),'Стоимость')]/../div[2]")
+          .text().replaceAll("[^0-9]", "");
+      return strPrice;
+    } catch (IOException e) {
+      throw new RuntimeException("Couldn't get jsoup connect for: " + href);
+    }
+  }
+
   public void chosenCategoryShouldMatchCatalogFilter(String chosenCategoryText){
     String categoryClearName = chosenCategoryText.split(" \\(")[0];
     CatalogFilterSection pageFilter = new CatalogFilterSection(driver);
