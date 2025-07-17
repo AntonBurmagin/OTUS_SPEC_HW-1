@@ -20,7 +20,7 @@
     <assertj.version>3.27.3</assertj.version>
     <jsoup.version>1.19.1</jsoup.version>
     <cucumber.version>7.2.3</cucumber.version>
-    <cucumber.guice.version>7.2.3</cucumber.guice.version>
+    <cucumber.guice.version>5.5.0</cucumber.guice.version>
     <junit.suite.version>1.12.2</junit.suite.version>
 
     <compiler.version>3.13.0</compiler.version>
@@ -84,17 +84,17 @@
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit-platform-engine</artifactId>
-      <version>7.2.3</version>
+      <version>${cucumber.version}</version>
     </dependency>
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>7.2.3</version>
+      <version>${cucumber.version}</version>
     </dependency>
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-guice</artifactId>
-      <version>5.5.0</version>
+      <version>${cucumber.guice.version}</version>
     </dependency>
   </dependencies>
 
@@ -120,24 +120,24 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--        <version>${checkstyle.plugin.version}</version>-->
-<!--        <configuration>-->
-<!--          <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
-<!--          <configLocation>${project.build.sourceDirectory}/../resources/checkstyle.xml</configLocation>-->
-<!--        </configuration>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>analyze-compile</id>-->
-<!--            <phase>compile</phase>-->
-<!--            <goals>-->
-<!--              <goal>check</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--      </plugin>-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.plugin.version}</version>
+        <configuration>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <configLocation>${project.build.sourceDirectory}/../resources/checkstyle.xml</configLocation>
+        </configuration>
+        <executions>
+          <execution>
+            <id>analyze-compile</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>

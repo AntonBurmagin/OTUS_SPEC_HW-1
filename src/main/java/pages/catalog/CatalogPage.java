@@ -10,14 +10,10 @@ import data.MonthData;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.AbsBasePage;
-import pages.catalog.courses.AbsCoursePage;
-import pages.catalog.courses.CoursePage;
 import scope.ScenScoped;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -82,7 +78,6 @@ public class CatalogPage extends AbsBasePage {
   public void clickCourse(String courseName){
     if(waiter.waitForCondition(ExpectedConditions.visibilityOfAllElementsLocatedBy(courseByFromName(courseName))))
       actions.moveToElement(driver.findElement(courseByFromName(courseName))).click().build().perform();
-//    return new CoursePage((ScenScoped) driver);
   }
 
   public By courseByFromName(String courseName){
@@ -106,10 +101,10 @@ public class CatalogPage extends AbsBasePage {
 
   public List<WebElement> getCoursesByDate(LocalDate date) {
     scrollCatalogPage();
-    String dateFilter = String.format("%s %s %s", date.getDayOfMonth(),
+    String dayOfMonth = date.getDayOfMonth() > 9 ? String.valueOf(date.getDayOfMonth()) : String.format("0%s", date.getDayOfMonth());
+    String dateFilter = String.format("%s %s %s", dayOfMonth,
                                       MonthData.customValueOf(date.getMonthValue()).getName(),
                                       date.getYear());
-
     return getDisplayedCourses().stream().filter(x -> x.getText().contains(dateFilter)).toList();
   }
 
@@ -122,28 +117,11 @@ public class CatalogPage extends AbsBasePage {
       String href = System.getProperty("base.url") + course.getDomAttribute("href");
       coursePage = Jsoup.connect(href).get();
       String coursePageName = coursePage.selectFirst("section h1").text();
-      String coursePageDate = coursePage.select("section > div > div > div > p").get(1).text();
+      String coursePageDate = coursePage.selectXpath("//main//section/div[3]//p").getFirst().text();
 
       assertThat(catalogName).isEqualTo(coursePageName);
-      assertTrue(catalogDate.contains(coursePageDate));
+      assertThat(catalogDate).contains(coursePageDate);
     }
-  }
-
-  public void getMinPriceCourses(List<WebElement> courses) throws IOException {
-    Document coursePage;
-    Integer minPrice = null;
-    for (WebElement course : courses) {
-      String href = System.getProperty("base.url") + course.getDomAttribute("href");
-      coursePage = Jsoup.connect(href).get();
-      String strPrice = coursePage.selectXpath("*//div[contains(text(),'Стоимость')]/../div[2]")
-                                  .text().replaceAll("[^0-9]", "");
-      if (strPrice.length() > 0) {
-        Integer price = Integer.parseInt(strPrice);
-        if (minPrice == null || price < minPrice)
-          minPrice = price;
-      }
-    }
-    System.out.println("Min price is " + minPrice);
   }
 
   public String getPrepCoursePrice(WebElement prepCourseTile) {

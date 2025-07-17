@@ -2,7 +2,6 @@ package common;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
-import scope.ScenScoped;
 import waiters.CustomWaiter;
 import java.time.Duration;
 

@@ -1,12 +1,10 @@
 package main.otus.hooks;
 
 import com.google.inject.Inject;
-
-
 import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import org.openqa.selenium.WebDriver;
 import scope.ScenScoped;
+
 
 public class Hooks {
   @Inject
@@ -19,9 +17,5 @@ public class Hooks {
       driver.quit();
   }
 
-//  @Before
-//  public void before() {
-//    WebDriver driver = scenScoped.getDriver();
-//  }
 
 }

@@ -1,11 +1,15 @@
 package main.otus.steps;
 
+import com.google.inject.Inject;
 import io.cucumber.java.ru.Пусть;
+import scope.ScenScoped;
 
 public class DriverSteps {
+  @Inject
+  private ScenScoped scenScoped;
 
-  @Пусть("Выбор браузера (.*)$")
+  @Пусть("Я открываю браузер (chrome|firefox)$")
   public void setBrowser(String chosenBrowser) {
-    System.setProperty("browser", chosenBrowser);
+    scenScoped.changeBrowser(chosenBrowser);
   }
 }

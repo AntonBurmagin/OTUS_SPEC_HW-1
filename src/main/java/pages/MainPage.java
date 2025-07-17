@@ -3,12 +3,9 @@ package pages;
 import annotations.Path;
 import com.google.inject.Inject;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import pages.catalog.CatalogPage;
 import scope.ScenScoped;
-
 import java.util.List;
 import java.util.Random;
 
@@ -31,8 +28,9 @@ public class MainPage extends AbsBasePage {
 
   //methods
   public void acceptCookiePolicy(){
-    if(waiter.waitForCondition(ExpectedConditions.visibilityOfElementLocated(cookieNotificationButtonLocator)))
+    if(waiter.waitForCondition(ExpectedConditions.elementToBeClickable(cookieNotificationButtonLocator))) {
       driver.findElement(cookieNotificationButtonLocator).click();
+    }
   }
 
   public void hoverOverLearning(){
@@ -61,15 +59,6 @@ public class MainPage extends AbsBasePage {
   public void clickCourseCategory(WebElement courseCategory) {
     actions.moveToElement(courseCategory).build().perform();
     courseCategory.click();
-//    return new CatalogPage((ScenScoped) driver);
-  }
-
-  public void moveToCategoryShouldMatchCatalogFilter(WebElement moveToCategory){
-    String categoryText = moveToCategory.getText();
-    actions.moveToElement(moveToCategory).build().perform();
-    moveToCategory.click();
-    CatalogPage catalogPage = new CatalogPage((ScenScoped) driver);
-    catalogPage.chosenCategoryShouldMatchCatalogFilter(categoryText);
   }
 
 

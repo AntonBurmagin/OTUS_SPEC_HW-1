@@ -3,7 +3,7 @@ package factory.settings;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 
-public class ChromeBroserSettings implements IBrowserSettings{
+public class ChromeBrowserSettings implements IBrowserSettings{
 
   @Override
   public ChromeOptions settings(String...settings) {

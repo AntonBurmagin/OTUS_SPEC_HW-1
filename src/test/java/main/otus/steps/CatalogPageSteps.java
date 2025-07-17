@@ -8,11 +8,9 @@ import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
 import pages.catalog.CatalogPage;
 import scope.ScenScoped;
-
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.function.BinaryOperator;
+
 
 public class CatalogPageSteps {
   @Inject
@@ -40,7 +38,6 @@ public class CatalogPageSteps {
   @Если("Присутствует курс (.*)$")
   public void courseShouldPresent(String courseName){
     catalogPage.courseShouldPresent(courseName);
-    System.out.println("Course " + courseName + " is found");
   }
 
   @И("Кликнуть по плитке курса (.*)$")
@@ -62,13 +59,13 @@ public class CatalogPageSteps {
     LocalDate nearestDate = startDateExtremum.getNearestDate();
     LocalDate latestDate = startDateExtremum.getLatestDate();
     catalogPage.catalogAndCourseInfoShouldMatch(catalogPage.getCoursesByDate(nearestDate));
-    if (nearestDate != latestDate)
+    if (latestDate.isAfter(nearestDate))
       catalogPage.catalogAndCourseInfoShouldMatch(catalogPage.getCoursesByDate(latestDate));
+
   }
 
   @Тогда("Отобрать (Самые дорогие|Самые дешевые) (?:подготовительные курсы)$")
   public void filterCourseByPrice(String predicate) {
-    System.out.println(predicate);
     Integer priceToFind = catalogPage.getDisplayedCourses().stream()
         .map(course -> catalogPage.getPrepCoursePrice(course))
         .distinct().filter(price -> price.length() > 0).map(price -> Integer.parseInt(price))
@@ -78,7 +75,7 @@ public class CatalogPageSteps {
           else
             return firstPrice < secondPrice ? firstPrice : secondPrice;
         }).orElse(null);
-
+    System.out.println(predicate + "курсы:");
     catalogPage.getDisplayedCourses().stream()
         .filter(course -> catalogPage.getPrepCoursePrice(course).equalsIgnoreCase(priceToFind.toString()))
         .forEach(course -> {
@@ -86,6 +83,7 @@ public class CatalogPageSteps {
           System.out.println("-----------------------------");
         });
   }
+
 
 
 
